@@ -2,9 +2,9 @@
   a framework of springboot  which including some frequently used components
   
 # Base Env 
-- Springboot 1.59
+- Springboot 2.0
 
-- JDK 1.8
+- JDK 9
 
 # Support what ?
 - Cache

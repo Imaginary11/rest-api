@@ -1,0 +1,186 @@
+#!/bin/bash
+# @author : Imaginary
+# @date : 2017/12/26
+
+source /etc/profile
+
+app_name="rest-api"
+
+
+temp_install_path="usr/local/$app_name"
+rc_d="/etc/rc.d"
+crontab="/var/spool/cron/root"
+config_path="/etc/conf"
+config_name="rest_service.cfg"
+install_path="/$temp_install_path"
+app_class="$app_name-1.0.jar.original"
+
+columns=$(tput cols)
+equalsign="="
+step=`expr $columns / 4`
+step2=`expr $step \* 2`
+step3=`expr $step \* 3`
+step4=`expr $step \* 4 - 5`
+
+package=$app_name
+arch='x86_64'
+version=`sed -n '2, 1p' usr/local/$app_name/package.info | awk '{print $1}'`
+copyright='Abloomy Cloud Service'
+size=`sed -n '1, 1p' usr/local/$app_name/package.info | awk '{print $1}'`
+step5=`expr $step \* 4 - ${#size} - 1`
+
+equalsign="="
+
+packageInfo(){
+	frameLine=""
+	for ((i =0;i<$columns;i++));do
+	   	printf "="
+	done
+    for ((i =0;i<$columns;i++));do
+		if [ $i == 1 ];then
+			printf "Package"
+			i=$i+6
+		elif [ $i == $step ];then
+			printf "Arch"
+			i=$i+3
+		elif [ $i == $step2 ];then
+			printf "Version"
+			i=$i+6
+		elif [ $i == $step3 ];then
+			printf "Copyright"
+			i=$i+8
+		elif [ $i == $step4 ];then 
+			printf "Size "
+			break
+		else
+			printf " "
+		fi
+    done
+	echo
+    for ((i =0;i<$columns;i++));do
+        printf "="
+    done
+	echo
+	echo "Installing:"
+    for ((i =0;i<$columns;i++));do
+		if [ $i == 1 ];then
+			printf "$package"
+			i=$i+${#package}-1
+		elif [ $i == $step ];then
+		    printf "$arch"
+			i=$i+${#arch}-1
+		elif [ $i == $step2 ];then
+		    printf "$version"
+			i=$i+${#version}-1
+		elif [ $i == $step3 ];then
+			printf "$copyright"
+			i=$i+${#copyright}-1
+		elif [ $i == $step5 ];then
+			printf "$size "
+			break
+		else
+			printf " "
+		fi		
+	done
+
+}
+
+processbar(){
+	arr=("|" "/" "-" "\\")  
+	i=0  
+	var=0  
+	ret=""  
+	tmp=""  
+	while [ $i -le 100 ]  
+	do  
+	    printf "\rprocess[%-100s[%s%%]][%s]" ${tmp} ${var} ${arr[(($i%4))]}  
+		ret=${ret}=  
+		tmp=${ret}  
+		let i++  
+		let var++  
+		sleep 0.1  
+	done
+	echo
+	echo 
+	echo "Installed:"
+	echo "  $package-$version"
+}
+
+release(){
+	jar_count=`find $temp_install_path/lib -name "*.*"| wc -l`
+	if [ "1" = "$jar_count"  ];then
+		rm -rf $install_path/lib/$app_class
+		cp $temp_install_path/lib/$app_class $install_path/lib/$app_class
+		rm -rf $install_path/bin/*
+		cp -rf $temp_install_path/bin/* $install_path/bin
+        ver=`cat "$temp_install_path/version"`
+		echo "-$ver" >> $install_path/version
+		cp -rf $temp_install_path/conf/* $install_path/conf
+		size=`sed -n '1, 1p' usr/local/$app_name/package.info | awk '{print $2}'`
+	else
+		rm -rf $install_path
+		cp -rpf usr /
+		size=`sed -n '1, 1p' usr/local/$app_name/package.info | awk '{print $1}'`
+	fi
+}
+
+install(){
+	cp -rf $temp_install_path/bin/$app_name /usr/local/bin
+	cp -rf $temp_install_path/bin/initx /usr/local/bin
+	/usr/bin/python /usr/local/bin/initx $app_name
+	service crond stop > /dev/null &2>1 
+	$install_path/bin/$app_name stop > /dev/null &2>1
+	sleep 5
+	$install_path/bin/$app_name start > /dev/null &2>1
+	service crond start > /dev/null &2>1
+}
+
+health(){
+	[ -f $crontab ] && {
+		health_check=`grep "$install_path/bin/health_check" $crontab`
+	}
+
+	[ -z "$health_check" ] && {
+		echo "*/5 * * * * $install_path/bin/health_check" >> $crontab
+	}
+	echo "   health check"
+}
+
+boot(){
+	[ -f $rc_d/rc.local ] && {
+		cp -a $rc_d/rc.local $rc_d/rc.localbak
+		config_boot=`grep "$install_path/bin/$app_name start" $rc_d/rc.local`
+	}
+
+	[ -z "$config_boot" ] && {
+		echo "$install_path/bin/$app_name start > $install_path/log/$app_name.boot.log 2>&1" >> $rc_d/rc.local
+	}
+	echo "   boot from the start"
+}
+
+validate(){
+	[ ! -f "$config_path/$config_name" ] && {
+		mkdir -p $config_path
+		cp $temp_install_path/conf/$config_name $config_path
+		echo "Error: Failed dependencies:"
+		echo "   $config_name not found !"
+		echo "   a default config file had been copied to $config_path/$config_name"
+		echo "   please modify the config file and reinstall program"
+		exit;
+	}
+}
+
+packageInfo
+echo
+echo
+validate
+
+release 
+install &
+
+processbar 
+wait
+echo "Extra Installed:"
+health
+boot
+echo "Completed!"

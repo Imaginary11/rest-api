@@ -1,0 +1,88 @@
+#!/usr/bin/python
+
+# Author : Imaginary
+# Date   : 2017/12/26
+# coding:utf8
+import os, sys
+
+configDir = "/etc/conf"
+name = "rest_service.cfg"
+
+
+class Properties(object):
+    def __init__(self, filename):
+        self.filename = filename
+        self.properties = {}
+
+    def __getDict(self, key, dictName, value):
+        if key.find('.') > 0:
+            k = key.split('.')[0]
+            dictName.setdefault(k, {})
+            return self.__getDict(key[len(k) + 1:], dictName[k], value)
+        else:
+            dictName[key] = value
+            return
+
+    def getProperties(self):
+        try:
+            if not os.path.exists(self.filename):
+                return
+            proFile = open(self.filename, 'Ur')
+            for line in proFile.readlines():
+                line = line.strip().replace('\n', '')
+                if line.find('#') != -1:
+                    line = line[0:line.find('#')]
+                if line.find('=') > 0:
+                    kv = line.split('=')
+                    kv[1] = line[len(kv[0]) + 1:]
+                    self.__getDict(kv[0].strip(), self.properties, kv[1].strip())
+        except Exception as e:
+            raise e
+        else:
+            proFile.close()
+        return self.properties
+
+
+def getProp():
+    return Properties(configDir + os.sep + name).getProperties()
+
+
+def replaceProp(line, prop):
+    for key in prop:
+        tempkey = "{" + key + "}"
+        if line.find(tempkey) > 0:
+            line = line.replace(tempkey, prop[key])
+    return line
+
+
+def initialFile(path, prop):
+    filelist = os.listdir(path)
+    for filename in filelist:
+        filepath = os.path.join(path, filename)
+        if os.path.isdir(filepath):
+            initialFile(filepath, prop)
+        else:
+            if filepath.endswith(".tpl"):
+                rfile = open(filepath, 'r')
+                des = filepath[0:filepath.index('.tpl')]
+                if os.path.exists(des):
+                    os.remove(des)
+                wfile = open(des, 'w')
+                for line in rfile.readlines():
+                    wfile.writelines(replaceProp(line, prop))
+                rfile.close()
+                wfile.close()
+
+
+def main():
+    path = "/usr/local"
+    if len(sys.argv) > 1 and sys.argv[1] != None and sys.argv[1] != '':
+        path = path + "/" + sys.argv[1]
+    prop = getProp()
+    if prop == None or len(prop) == 0:
+        exit("config file not exits")
+    initialFile(path, prop)
+
+
+if __name__ == '__main__':
+    main()

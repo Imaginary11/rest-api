@@ -1,0 +1,18 @@
+#!/bin/bash
+
+APP_HOME=/usr/local/rest-api
+APP_MAINCLASS="Application"
+APP_NAME=rest-api-1.0
+
+
+checkpid() {
+	javaps=`$JAVA_HOME/bin/jps -l | grep -E "$APP_MAINCLASS|$APP_NAME"`
+    if [ -n "$javaps" ]; then
+       psid=`echo $javaps | awk '{print $1}'`
+    fi
+}
+checkpid
+echo "pid = $psid"
+[ -z $psid  ] && {
+	$APP_HOME/bin/rest-api start
+}
