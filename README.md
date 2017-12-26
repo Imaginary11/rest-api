@@ -1,5 +1,5 @@
 # rest-api
-  a framework of springboot  whitch including some frequently used components
+  a framework of springboot  which including some frequently used components
   
 # Base Env 
 - Springboot 1.59
