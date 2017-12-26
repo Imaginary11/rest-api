@@ -5,8 +5,9 @@ export RELEASE_DIR
 compile_dir=${PWD}
 APP_NAME = rest-api
 CONFIG_DIR = usr/local/${APP_NAME}
-version = $(shell svn info |grep "Last Changed Rev:" | awk -F ': ' '{print $$2}')
-pom_version = $(shell svn info pom.xml |grep "Last Changed Rev:" | awk -F ': ' '{print $$2}')
+version = $(shell git rev-list --all|wc -l )
+pom_version = $(shell git rev-list --all pom.xml|wc -l )
+
 build_dir:
 	rm -rf ${RELEASE_DIR}
 	mkdir -p $(RELEASE_DIR)/$(CONFIG_DIR)/conf
