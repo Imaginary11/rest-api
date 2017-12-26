@@ -1,8 +1,9 @@
+（项目重构、之前的工程DELETE了,近期会补充完整）
 # rest-api
   a framework of springboot  which including some frequently used components
   
 # Base Env 
-- Springboot 2.0
+- Springboot 1.59
 
 - JDK 9
 
