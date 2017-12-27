@@ -25,10 +25,10 @@ step4=`expr $step \* 4 - 5`
 package=$app_name
 arch='x86_64'
 version=`sed -n '2, 1p' usr/local/$app_name/package.info | awk '{print $1}'`
-copyright='Abloomy Cloud Service'
+copyright='Imaginary'
 size=`sed -n '1, 1p' usr/local/$app_name/package.info | awk '{print $1}'`
 step5=`expr $step \* 4 - ${#size} - 1`
-
+isCentos6=`cat /etc/redhat-release | grep 'release 6'`
 equalsign="="
 
 packageInfo(){
@@ -127,12 +127,20 @@ release(){
 install(){
 	cp -rf $temp_install_path/bin/$app_name /usr/local/bin
 	cp -rf $temp_install_path/bin/initx /usr/local/bin
-	/usr/bin/python /usr/local/bin/initx $app_name
-	service crond stop > /dev/null &2>1 
+	/usr/bin/python /usr/local/bin/initx $app_name 
+	[ ! -z $isCentos6 ] && {
+		service crond stop > /dev/null &2>1 
+	} || {
+		/bin/systemctl stop  crond.service
+	}
 	$install_path/bin/$app_name stop > /dev/null &2>1
 	sleep 5
 	$install_path/bin/$app_name start > /dev/null &2>1
-	service crond start > /dev/null &2>1
+        [ ! -z $isCentos6 ] && {
+		service crond start > /dev/null &2>1
+        } || {
+		/bin/systemctl start  crond.service
+        }
 }
 
 health(){
