@@ -12,3 +12,12 @@ datasource:
     driver-class-name: ${datasource.primary.driver-class-name}
     type: ${datasource.primary.type}
     url: jdbc:mysql://${datasource.primary.host}:3306/order?characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true
+
+redis:
+  cache:
+    host: imaginary.org.cn
+    port: 6379
+    maxAwait: 10000
+    maxIdle: 8
+    timeout: 5000
+    testOnBorrow: true

@@ -1,4 +1,4 @@
-package cn.org.imaginary.web.restapi.common.base;
+package cn.org.imaginary.web.restapi.common.dao.database;
 
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,6 @@
 package cn.org.imaginary.web.restapi;
 
-import cn.org.imaginary.web.restapi.common.dao.database.BaseDao;
+import cn.org.imaginary.web.restapi.common.dao.cache.redis.RedisCache;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,17 +10,19 @@ import org.springframework.test.context.junit4.SpringRunner;
 /**
  * @author : Imaginary
  * @version : V1.0
- * @date : 2017/12/27 21:10
+ * @date : 2017/12/27 22:25
  * @see :
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class DBTest {
+public class RedisCacheTest {
+
     @Autowired
-    private BaseDao accountBaseDao;
+    private RedisCache redisCache;
 
     @Test
-    public void testDB() {
-        accountBaseDao.query("getAdminNames").forEach(p -> System.out.println(p.toString()));
+    public void testRedisCache() {
+        redisCache.set("hello", "world");
+        System.out.println("hello " + redisCache.get("hello"));
     }
 }
