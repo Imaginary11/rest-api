@@ -35,7 +35,7 @@ REST 风格,格式 {模块}/{版本}/{资源} 如
     - 如果pom版本与当前主分支版本号不一致，说明最新的提交未修改pom文件，没有引入第三方依赖包，此时会生成一个快速升级包和一个全量安装包。快速升级包只含有主程序和配置文件，体积小。
 
 # 安装界面
-![](ftp://imaginary.org.cn/pub/images/install.png)
+![](http://imaginary1.cn/install-new.png)
 
 
 # 组件支持 
