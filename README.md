@@ -17,7 +17,7 @@ REST 风格,格式 {模块}/{版本}/{资源} 如
 
 
 # 概述
-  基于SpringBoot的web框架，整个了常用的组件如mysql、redis、mongodb、elasticsearch、rabbitmq、quartz、freemaker、jsonrpc、ehcache等，提供基于centos6.x的自动化安装部署脚本、服务健康检查脚本，脚本实现技术为Makefile、shell、python2.x。
+  基于SpringBoot的web框架，整个了常用的组件如mysql、redis、mongodb、elasticsearch、rabbitmq、quartz、freemaker、jsonrpc、ehcache等，提供基于centos的自动化安装部署脚本、服务健康检查脚本，脚本实现技术为Makefile、shell、python2.x。
   
 # 基础环境 
 - Springboot 1.59
@@ -34,6 +34,8 @@ REST 风格,格式 {模块}/{版本}/{资源} 如
 - 快速升级包
     - 如果pom版本与当前主分支版本号不一致，说明最新的提交未修改pom文件，没有引入第三方依赖包，此时会生成一个快速升级包和一个全量安装包。快速升级包只含有主程序和配置文件，体积小。
 
+# 安装界面
+![](ftp://imaginary.org.cn/pub/images/install.png)
 
 
 # 组件支持 
