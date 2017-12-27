@@ -4,7 +4,7 @@ package cn.org.imaginary.web.restapi.common.exception;
  * @author : Imaginary
  * @version : V1.0
  * @date : 2017/12/27 0:14
- * @see :
+ * @see : 异常基类
  */
 public class BaseException extends RuntimeException {
 

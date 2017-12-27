@@ -9,7 +9,7 @@ import java.util.Map;
  * @author : Imaginary
  * @version : V1.0
  * @date : 2017/12/27 0:10
- * @see :
+ * @see : 数据库基本操作DAO接口
  */
 public interface BaseDao {
     String ORDER_BY_INFO = "ORDER_BY_INFO";

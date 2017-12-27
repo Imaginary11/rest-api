@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
  * @author : Imaginary
  * @version : V1.0
  * @date : 2017/12/27 0:15
- * @see :
+ * @see : 主库（账号库）操作bean
  */
 @Service("accountBaseDao")
 public class AccountBaseDaoImpl extends BaseDaoImpl {

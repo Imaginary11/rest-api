@@ -1,30 +1,14 @@
-spring:
-  datasource:
-    primary:
-      host: imaginary.org.cn
-      username: root
-      password: rootroot
-      driver-class-name: com.mysql.jdbc.Driver
-      type: com.alibaba.druid.pool.DruidDataSource
-      url: jdbc:mysql://${spring.datasource.primary.host}:3306/account?characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true
-      initial-size: 1
-      time-between-eviction-runs-millis: 300000
-      min-evictable-idle-time-millis: 600000
-      validation-query: SELECT 1 FROM DUAL
-      test-while-idle: true
-      test-on-borrow: false
-      test-on-return: false
-    second:
-      host: ${spring.datasource.primary.host}
-      username: ${spring.datasource.primary.username}
-      password: ${spring.datasource.primary.password}
-      driver-class-name: ${spring.datasource.primary.driver-class-name}
-      type: ${spring.datasource.primary.type}
-      url: jdbc:mysql://${spring.datasource.primary.host}:3306/order?characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true
-      initial-size: 1
-      time-between-eviction-runs-millis: 300000
-      min-evictable-idle-time-millis: 600000
-      validation-query: SELECT 1 FROM DUAL
-      test-while-idle: true
-      test-on-borrow: false
-      test-on-return: false
+datasource:
+  primary:
+    host: imaginary.org.cn
+    username: root
+    password: rootroot
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://${datasource.primary.host}:3306/account?characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true
+  second:
+    host: ${datasource.primary.host}
+    username: ${datasource.primary.username}
+    password: ${datasource.primary.password}
+    driver-class-name: ${datasource.primary.driver-class-name}
+    type: ${datasource.primary.type}
+    url: jdbc:mysql://${datasource.primary.host}:3306/order?characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true

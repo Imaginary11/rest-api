@@ -16,7 +16,7 @@ import java.util.Map;
  * @author : Imaginary
  * @version : V1.0
  * @date : 2017/12/27 0:12
- * @see :
+ * @see : 数据库基本操作实现类
  */
 public class BaseDaoImpl implements BaseDao {
     public SqlSessionFactory sqlSessionFactory;

@@ -6,7 +6,7 @@ import java.util.List;
  * @author : Imaginary
  * @version : V1.0
  * @date : 2017/12/27 0:11
- * @see :
+ * @see : 分页查询bean
  */
 public class PageResult {
     private int pagesize = 20;
