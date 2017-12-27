@@ -15,7 +15,7 @@ build_dir:
 	mkdir -p $(RELEASE_DIR)/$(CONFIG_DIR)/bin
 	mkdir -p $(RELEASE_DIR)/$(CONFIG_DIR)/log
 install: build_dir
-	rm -rf ${APP_NAME}-1.0-r*.rls
+	rm -rf ${APP_NAME}-1.0-r*.tgz
 	mvn clean package -Dmaven.test.skip=true
 	cp -a target/${APP_NAME}-1.0.jar.original $(RELEASE_DIR)/$(CONFIG_DIR)/lib/${APP_NAME}-1.0.jar.original
 	unzip target/${APP_NAME}-1.0.zip -d target/
@@ -31,19 +31,19 @@ install: build_dir
 	chmod +x $(RELEASE_DIR)/$(CONFIG_DIR)/bin/health_check
 	chmod +x $(RELEASE_DIR)/$(CONFIG_DIR)/bin/initx
 	chmod +x  $(RELEASE_DIR)/install
-	cd ${RELEASE_DIR}  && tar zcf ../${APP_NAME}-1.0-r${version}.rls ./*
-	ls -lh ${APP_NAME}-1.0-r${version}.rls | awk -F ' ' '{print $$5}'> $(RELEASE_DIR)/$(CONFIG_DIR)/package.info
+	cd ${RELEASE_DIR}  && tar zcf ../${APP_NAME}-1.0-r${version}.tgz ./*
+	ls -lh ${APP_NAME}-1.0-r${version}.tgz | awk -F ' ' '{print $$5}'> $(RELEASE_DIR)/$(CONFIG_DIR)/package.info
 	echo "r${version}" >> $(RELEASE_DIR)/$(CONFIG_DIR)/package.info
-	rm -rf ${APP_NAME}-1.0-r${version}.rls
-	cd ${RELEASE_DIR}  && tar zcf ../${APP_NAME}-1.0-r${version}.rls ./*
+	rm -rf ${APP_NAME}-1.0-r${version}.tgz
+	cd ${RELEASE_DIR}  && tar zcf ../${APP_NAME}-1.0-r${version}.tgz ./*
 ifneq (${version},${pom_version})
 	rm -rf $(RELEASE_DIR)/$(CONFIG_DIR)/lib/*
 	cp -a target/${APP_NAME}-1.0.jar.original $(RELEASE_DIR)/$(CONFIG_DIR)/lib/${APP_NAME}-1.0.jar.original
-	cd ${RELEASE_DIR}  && tar zcf ../${APP_NAME}-1.0-r${version}-fup\(r${pom_version}\).rls ./* 
-	ls -lh ${APP_NAME}-1.0-r${version}-fup\(r${pom_version}\).rls | awk -F ' ' '{print $$5}'> $(RELEASE_DIR)/$(CONFIG_DIR)/package.info
+	cd ${RELEASE_DIR}  && tar zcf ../${APP_NAME}-1.0-r${version}-fup\(r${pom_version}\).tgz ./* 
+	ls -lh ${APP_NAME}-1.0-r${version}-fup\(r${pom_version}\).tgz | awk -F ' ' '{print $$5}'> $(RELEASE_DIR)/$(CONFIG_DIR)/package.info
 	echo "r${version}" >> $(RELEASE_DIR)/$(CONFIG_DIR)/package.info
-	rm -rf ${APP_NAME}-1.0-r${version}-fup\(r${pom_version}\).rls
-	cd ${RELEASE_DIR}  && tar zcf ../${APP_NAME}-1.0-r${version}-fup\(r${pom_version}\).rls ./*
+	rm -rf ${APP_NAME}-1.0-r${version}-fup\(r${pom_version}\).tgz
+	cd ${RELEASE_DIR}  && tar zcf ../${APP_NAME}-1.0-r${version}-fup\(r${pom_version}\).tgz ./*
 endif
 	rm -rf target
 	rm -rf ${RELEASE_DIR}
