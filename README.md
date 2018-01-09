@@ -22,7 +22,7 @@ REST 风格,格式 {模块}/{版本}/{资源} 如
 # 基础环境 
 - Springboot 1.59
 
-- JDK 9
+- JDK 8
 
 - WEB容器 Undertow
 
